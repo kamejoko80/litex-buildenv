@@ -6,6 +6,29 @@ is a tool for easily developing
 originally designed to make the [TimVideos' HDMI2USB](https://hdmi2usb.tv) easy
 to develop, but has now expanded to support multiple projects.
 
+## Quick Build
+
+```
+# Download the debian packages needed to support litex environment.  Usually
+# we only do this once.
+./scripts/debian-setup.sh
+
+# Download/update the litex specific packages (python, verilator, submodules etc)
+./scripts/download-env.sh
+
+# Enter the Dev/Debug/Build environment
+export PLATFORM=ice40_hx8k_b_evn 
+export TARGET=base 
+export CPU=picorv32 
+export CPU_VARIANT=minimal 
+export FIRMWARE=micropython
+source ./scripts/enter-env.sh
+make gateware
+make gateware-flash
+./scripts/build-micropython.sh
+make image-flash
+```
+
 ## Quick Links
 
  * [LiteX Build Environment Wiki](https://github.com/timvideos/litex-buildenv/wiki)
