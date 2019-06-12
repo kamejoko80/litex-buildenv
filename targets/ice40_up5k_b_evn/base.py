@@ -39,8 +39,22 @@ class _CRG(Module):
 
         # FIXME: Use PLL, increase system clock to 32 MHz, pending nextpnr
         # fixes.
+        # Fout = Fin x (DIVF + 1) / (2^DIVQ x (DIVR + 1))
+        # self.specials += \
+        #    Instance("SB_PLL40_PAD",
+        #        p_FEEDBACK_PATH="SIMPLE",
+        #        p_DIVR=0,
+        #        p_DIVF=0,
+        #        p_DIVQ=0,
+        #        p_FILTER_RANGE=1,
+        #        i_RESETB=1,
+        #        i_BYPASS=0,                
+        #        i_PACKAGEPIN=clk12,
+        #        o_PLLOUTCORE=self.cd_sys.clk,
+        #    )
+        
         self.comb += self.cd_sys.clk.eq(clk12)
-
+        
         # POR reset logic- POR generated from sys clk, POR logic feeds sys clk
         # reset.
         self.clock_domains.cd_por = ClockDomain()

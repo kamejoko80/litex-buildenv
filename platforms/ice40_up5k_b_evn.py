@@ -16,10 +16,17 @@ _io = [
     ("user_sw", 2, Pins("34"), IOStandard("LVCMOS33")),
     ("user_sw", 3, Pins("43"), IOStandard("LVCMOS33")),
 
-    ("clk12", 0, Pins("35"), IOStandard("LVCMOS33"))
-]
+    # The ICE40UP5K-B-EVN does not use the provided FT2232H chip to provide a
+    # UART port. One must use their own USB-to-serial cable instead to get a UART.
+    # We have chosen to use 48B and 51A for "tx" and "rx" respectively on Header B
+    # to implement UART connections. The board comes unpopulated and will need to
+    # have headers soldered.
+    ("serial", 0,
+        Subsignal("tx", Pins("9"), Misc("PULLUP")),
+        Subsignal("rx", Pins("6")),
+        IOStandard("LVCMOS33")
+    ),
 
-spiflash = [
     # Only usable in PROG FLASH mode and J7 attached (see PCB silkscreen).
     ("spiflash", 0,
         Subsignal("cs_n", Pins("16"), IOStandard("LVCMOS33")),
@@ -27,21 +34,9 @@ spiflash = [
         Subsignal("mosi", Pins("14"), IOStandard("LVCMOS33")),
         Subsignal("miso", Pins("17"), IOStandard("LVCMOS33")),
     ),
-]
 
-# The ICE40UP5K-B-EVN does not use the provided FT2232H chip to provide a
-# UART port. One must use their own USB-to-serial cable instead to get a UART.
-# We have chosen to use 48B and 51A for "tx" and "rx" respectively on Header B
-# to implement UART connections. The board comes unpopulated and will need to
-# have headers soldered.
-serial = [
-    ("serial", 0,
-        Subsignal("tx", Pins("9"), Misc("PULLUP")),
-        Subsignal("rx", Pins("6")),
-        IOStandard("LVCMOS33")
-    )
+    ("clk12", 0, Pins("35"), IOStandard("LVCMOS33"))
 ]
-
 
 _connectors = [
     # Many pins on the AARDVARK, PMOD, J52/HEADER A, and J2/HEADER B connectors
