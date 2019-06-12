@@ -15,7 +15,7 @@ from gateware import cas
 from gateware import spi_flash
 
 from targets.utils import csr_map_update
-import platforms.ice40_up5k_b_evn as up5k
+from platforms import ice40_up5k_b_evn
 
 
 # Alternate serial port, using the second 6-pin PMOD port. Follows Digilent
@@ -75,8 +75,7 @@ class BaseSoC(SoCCore):
             kwargs['integrated_sram_size']=0
 
         # FIXME: Force either lite or minimal variants of CPUs; full is too big.
-        platform.add_extension(pmod_serial)
-        platform.add_extension(up5k.spiflash)
+        # platform.add_extension(pmod_serial)
         clk_freq = int(12e6)
 
         kwargs['cpu_reset_address']=self.mem_map["spiflash"]+platform.gateware_size
@@ -92,7 +91,8 @@ class BaseSoC(SoCCore):
         self.submodules.spiflash = spi_flash.SpiFlashSingle(
             platform.request("spiflash"),
             dummy=platform.spiflash_read_dummy_bits,
-            div=platform.spiflash_clock_div)
+            div=platform.spiflash_clock_div,
+            endianness=self.cpu.endianness)
         self.add_constant("SPIFLASH_PAGE_SIZE", platform.spiflash_page_size)
         self.add_constant("SPIFLASH_SECTOR_SIZE", platform.spiflash_sector_size)
         self.register_mem("spiflash", self.mem_map["spiflash"],

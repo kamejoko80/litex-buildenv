@@ -58,7 +58,7 @@ class BaseSoC(SoCCore):
         if 'integrated_rom_size' not in kwargs:
             kwargs['integrated_rom_size']=0
         if 'integrated_sram_size' not in kwargs:
-            kwargs['integrated_sram_size']=0x2800
+            kwargs['integrated_sram_size']=0x1000
 
         # FIXME: Force either lite or minimal variants of CPUs; full is too big.
 
@@ -77,7 +77,8 @@ class BaseSoC(SoCCore):
         self.submodules.spiflash = spi_flash.SpiFlashSingle(
             platform.request("spiflash"),
             dummy=platform.spiflash_read_dummy_bits,
-            div=platform.spiflash_clock_div)
+            div=platform.spiflash_clock_div,
+            endianness=self.cpu.endianness)
         self.add_constant("SPIFLASH_PAGE_SIZE", platform.spiflash_page_size)
         self.add_constant("SPIFLASH_SECTOR_SIZE", platform.spiflash_sector_size)
         self.register_mem("spiflash", self.mem_map["spiflash"],

@@ -36,8 +36,8 @@ spiflash = [
 # have headers soldered.
 serial = [
     ("serial", 0,
-        Subsignal("tx", Pins("J2:3")),
-        Subsignal("rx", Pins("J2:5")),
+        Subsignal("tx", Pins("9"), Misc("PULLUP")),
+        Subsignal("rx", Pins("6")),
         IOStandard("LVCMOS33")
     )
 ]
